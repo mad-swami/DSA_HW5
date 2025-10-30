@@ -8,14 +8,14 @@ package org.example
  * through operators (e.g., + , *). Provided is also functions to divide the matrix into n/2 x n/2 matrices.
  */
 class Matrix(size: Int) {
-    val matrixArray: Array<DoubleArray> = Array(size) {DoubleArray(size)}
+    private val matrixArray: Array<DoubleArray> = Array(size) {DoubleArray(size)}
     val matrixSize = size
 
-    fun set(row: Int, column: Int, value: Double) {
+    fun setValue(row: Int, column: Int, value: Double) {
         matrixArray[row][column] = value
     }
 
-    fun get(row: Int, column: Int): Double {
+    fun getValue(row: Int, column: Int): Double {
         return matrixArray[row][column]
     }
 
@@ -25,10 +25,13 @@ class Matrix(size: Int) {
 
         // the four matrices we divide the original into
         // they go in clockwise order from top left
-        val matrix1: Matrix = Matrix(matrixSize / 2)
-        val matrix2: Matrix = Matrix(matrixSize / 2)
-        val matrix3: Matrix = Matrix(matrixSize / 2)
-        val matrix4: Matrix = Matrix(matrixSize / 2)
+
+        val matrixSizes = matrixSize / 2
+
+        val matrix1 = Matrix(matrixSizes)
+        val matrix2 = Matrix(matrixSizes)
+        val matrix3 = Matrix(matrixSizes)
+        val matrix4 = Matrix(matrixSizes)
 
         // create an array of the matrices for each retrieval later
         val matrixArray: Array<Matrix> = arrayOf(matrix1, matrix2, matrix3, matrix4)
@@ -38,25 +41,25 @@ class Matrix(size: Int) {
             // go through all columns of our matrix
             for(j in 0 until matrixSize) {
                 // get the value at the specific index of our matrix
-                val matrixVal = this.get(i, j)
+                val matrixVal = this.getValue(i, j)
 
                 // if we are in the first half of the rows then we assign to the matrices 1 and 2
-                if(matrixSize / (i + 1) <= matrixSize / 2) {
+                if(i <= matrixSizes - 1 ) {
                     // if we are in first half of the columns then we assign to 1
-                    if (matrixSize / (j + 1) <= matrixSize / 2) {
-                        matrix1.set(i, j, matrixVal)
+                    if (j <= matrixSizes - 1) {
+                        matrix1.setValue(i, j, matrixVal)
                     // otherwise we assign to 2
                     } else {
-                        matrix2.set(i, j, matrixVal)
+                        matrix2.setValue(i, j - matrixSizes, matrixVal)
                     }
 
                 // opposite case of first two matrices, e.g. we are in the second half of the rows
                 } else {
                     // same thing we did with first two, check if we are in first half of columns or not
-                    if (matrixSize / (j + 1) <= matrixSize / 2) {
-                        matrix3.set(i, j, matrixVal)
+                    if (j <= matrixSizes - 1) {
+                        matrix3.setValue(i - matrixSizes, j, matrixVal)
                     } else {
-                        matrix4.set(i, j, matrixVal)
+                        matrix4.setValue(i - matrixSizes, j - matrixSizes, matrixVal)
                     }
                 }
             }
