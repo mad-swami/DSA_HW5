@@ -1,5 +1,7 @@
 package org.example
 
+import kotlin.math.log
+
 /**
  * Create, manipulate, and store square matrix of size n.
  *
@@ -20,9 +22,14 @@ class Matrix(val size: Int) {
      * @param row row of the matrix
      * @param column column of the matrix
      * @param value value to be set at the specific row column index
+     * @throws IllegalArgumentException if the rows or column input is out of bounds of the matrix
      */
     fun setValue(row: Int, column: Int, value: Double) {
-        matrixArray[row][column] = value
+        if (row < size && column < size) {
+            matrixArray[row][column] = value
+        } else {
+            throw IllegalArgumentException("Input out of bounds!")
+        }
     }
 
     /**
@@ -33,24 +40,37 @@ class Matrix(val size: Int) {
      * @param row row of the matrix
      * @param column of the matrix
      * @return the value of the matrix at the specific row and column index
+     * @throws IllegalArgumentException if the input row or column is out of bounds of the original matrix
      */
     fun getValue(row: Int, column: Int): Double {
-        return matrixArray[row][column]
+        if (row < size && column < size) {
+            return matrixArray[row][column]
+        } else {
+            throw IllegalArgumentException("Input out of bounds!")
+        }
     }
 
     /**
      * Add a new matrix to the current matrix.
      *
-     * Given a matrix add it to the current matrix object.
+     * Given a matrix add it to the current matrix object and return as a new matrix.
      *
      * @param matrix Matrix object to be added
+     * @return a new matrix that is the sum of the two matrices
+     * @throws IllegalArgumentException if the input matrix is not of the same size they cannot be added
      */
-    operator fun plus(matrix: Matrix) {
+    operator fun plus(matrix: Matrix): Matrix {
+        if (matrix.size != this.size) {
+            throw IllegalArgumentException("Input matrix must be of equal size!")
+        }
+        val addedMatrix = Matrix(size)
         for(row in 0 until matrix.size - 1) {
             for(col in 0 until matrix.size - 1) {
-                matrixArray[row][col] += matrix.getValue(row, col)
+                val addedVal = this.matrixArray[row][col] + matrix.getValue(row, col)
+                 addedMatrix.setValue(row, col, addedVal)
             }
         }
+        return addedMatrix
     }
 
     /**
@@ -65,6 +85,7 @@ class Matrix(val size: Int) {
         // assume dimension n is power of 2
         // maybe I will come back later and add padding but for now I am assuming the above
 
+        require(log(size.toDouble(), 2.0).mod(2.0) == 0.0) {"The size of the matrix to be divided must be of a power to 2."}
         // the four matrices we divide the original into
         // they go in clockwise order from top left
         val matrixSizes = size / 2
