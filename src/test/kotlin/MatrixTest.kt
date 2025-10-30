@@ -13,12 +13,12 @@ class MatrixTest {
 
     @Test
     fun divide() {
-        val testMatrix = Matrix(matrixSize)
+        val testMatrix = Matrix(4)
 
         val matrixArray = testMatrix.divide()
 
         for (matrix in matrixArray) {
-            assertEquals(matrix.matrixSize, 2)
+            assertEquals(matrix.size, 2)
         }
     }
 
