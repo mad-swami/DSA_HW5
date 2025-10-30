@@ -6,11 +6,19 @@ package org.example
  * Matrix creates a square matrix of size n thus with dimensions n x n. Getting values from the matrix can be done
  * through get by specifying row and column indices. Matrix operations such as addition and multiplication can be done
  * through operators (e.g., + , *). Provided is also functions to divide the matrix into n/2 x n/2 matrices.
+ *
+ * @param size size of matrix to be made, matrix will be size x size
+ * @property matrixSize size of the matrix made
  */
 class Matrix(size: Int) {
     private val matrixArray: Array<DoubleArray> = Array(size) {DoubleArray(size)}
     val matrixSize = size
 
+    /**
+     * Set a value at a given row and column index.
+     *
+     * Given a row and column index set the specific value
+     */
     fun setValue(row: Int, column: Int, value: Double) {
         matrixArray[row][column] = value
     }

@@ -13,7 +13,7 @@ class MatrixTest {
 
     @Test
     fun divide() {
-        val testMatrix = Matrix(4)
+        val testMatrix = Matrix(matrixSize)
 
         val matrixArray = testMatrix.divide()
 
