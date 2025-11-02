@@ -80,6 +80,7 @@ class Matrix(val size: Int) {
      * are then returned in an array in clockwise order from top left of the original matrix.
      *
      * @return an array of matrix objects
+     * @throws IllegalArgumentException if our matrix's size is not a power of 2
      */
     fun divide(): Array<Matrix> {
         // assume dimension n is power of 2
@@ -127,5 +128,25 @@ class Matrix(val size: Int) {
             }
         }
         return matrixArray
+    }
+
+    /**
+     *
+     */
+    operator fun times(other: Matrix): Matrix {
+        require(size == other.size) {"Size of the matrices multiplied must be equal."}
+
+        val productMatrix = Matrix(size)
+
+        for (i in 0 until size) {
+            for (j in 0 until size) {
+                var productVal = 0.0
+                for (k in 0 until size) {
+                    productVal += this.getValue(i, k) * other.getValue(k, j)
+                }
+                productMatrix.setValue(i, j, productVal)
+            }
+        }
+        return productMatrix
     }
 }
