@@ -131,13 +131,23 @@ class Matrix(val size: Int) {
     }
 
     /**
+     * Multiply two matrices of equal size together.
      *
+     * Since out matrix class creates square matrices we just need to confirm that our matrices are of equal size. THis method overloads
+     * the times operator for the matrix class. Implementation is based on traditional matrix multiplication methods.
+     *
+     * @param other a [Matrix] object
+     * @return a new [Matrix] object
      */
     operator fun times(other: Matrix): Matrix {
+        // matrices must be of equal size to be multiplied since our matrix class just creates square matrices
         require(size == other.size) {"Size of the matrices multiplied must be equal."}
 
+        // make a new matrix for returning
         val productMatrix = Matrix(size)
 
+        // go through rows and columns and perform rudimentary matrix multiplication, loading the new values into the
+        // product matrix
         for (i in 0 until size) {
             for (j in 0 until size) {
                 var productVal = 0.0

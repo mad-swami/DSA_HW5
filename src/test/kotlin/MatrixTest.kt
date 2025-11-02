@@ -30,6 +30,8 @@ class MatrixTest {
         val matrixVals1 = arrayOf(2.0, 3.0, 4.0, 9.0)
         val testMatrix1 = Matrix(size)
         var row = 0; var col = 0
+        // this is so poorly written lmao, sorry but I'm not going to rewrite
+        // idk what I was thinking, I just need two for loops
         for (i in 0 until matrixVals1.size) {
             if (i % 2 == 0) {
                 testMatrix1.setValue(row, col, matrixVals1[i])
@@ -58,14 +60,13 @@ class MatrixTest {
         val expectedVals = arrayOf(14.0, 31.0, 34.0, 77.0)
 
         var checkVal = 0
+        // why I didn't write the first two for loops like this, idk
         for (i in 0 until size ) {
             for (j in 0 until size ) {
                 assertEquals(expectedVals[checkVal], productMatrix.getValue(i, j))
                 checkVal ++
             }
         }
-
-
     }
 
 }
