@@ -106,4 +106,52 @@ class MatrixTest {
 
     }
 
+    /**
+     * For the purpose of testing Strassen's method versus regular matrix multiplication on various size problems
+     */
+    @Test
+    fun multiplicationRuntimes() {
+        val sizes = listOf(4, 16, 256, 1024)
+        val matrixArray1 = mutableListOf<Matrix>()
+        val matrixArray2 = mutableListOf<Matrix>()
+
+        for (size in sizes) {
+            val matrix1 = Matrix(size)
+            val matrix2 = Matrix(size)
+            for (i in 0 until size) {
+                for (j in 0 until size) {
+                    matrix1.setValue(i ,j, Random.nextDouble())
+                    matrix2.setValue(i, j, Random.nextDouble())
+                }
+            }
+            matrixArray1.add(matrix1)
+            matrixArray2.add(matrix2)
+        }
+
+        val regularRuntimes = mutableListOf<Double>()
+        val strassenRuntimes = mutableListOf<Double>()
+        for (index in matrixArray1.indices) {
+            val matrix1 = matrixArray1[index]
+            val matrix2 = matrixArray2[index]
+            val regularRuntime = measureTime {
+                matrix1 * matrix2
+            }
+            regularRuntimes.add(regularRuntime.toDouble(DurationUnit.SECONDS))
+            val strassenRuntime = measureTime {
+                matrix1.strassenMultiply(matrix2)
+            }
+            strassenRuntimes.add(strassenRuntime.toDouble(DurationUnit.SECONDS))
+        }
+
+        for (index in sizes.indices) {
+            val size = sizes[index]
+            val regularRuntime = regularRuntimes[index]
+            val strassenRuntime = strassenRuntimes[index]
+            println("The runtime for regular multiplication on a dataset of size $size was $regularRuntime seconds.\n")
+            println("The runtime for strassen multiplication on a dataset of size $size was $strassenRuntime seconds.\n")
+        }
+
+        assert(true)
+    }
+
 }
