@@ -162,7 +162,7 @@ class Matrix(val size: Int) {
      *
      * @param other a [Matrix] object
      * @throws IllegalArgumentException if the input matrices are not of equal size
-     * @return a new [Matrix] object
+     * @return a new product [Matrix] object
      */
     operator fun times(other: Matrix): Matrix {
         // matrices must be of equal size to be multiplied since our matrix class just creates square matrices
@@ -185,6 +185,16 @@ class Matrix(val size: Int) {
         return productMatrix
     }
 
+    /**
+     * Multiply two matrices together using Strassen's method.
+     *
+     * Need to confirm that matrices are of the same size for multiplication. Matrices are multiplied using Strassen's
+     * method for more efficient multiplying.
+     *
+     * @param other The other matrix to be multiplied by
+     * @throws IllegalArgumentException If the size of the two matrices are not equal and thus not fit for multiplication
+     * @return a new product [Matrix]
+     */
     fun strassenMultiply(other: Matrix): Matrix {
         require(size == other.size) {"Size of the matrices multiplied must be equal."}
 
