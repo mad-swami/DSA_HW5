@@ -1,6 +1,7 @@
 package org.example
 
 import kotlin.math.log
+import kotlin.math.log2
 
 /**
  * Create, manipulate, and store square matrix of size n.
@@ -51,7 +52,7 @@ class Matrix(val size: Int) {
     }
 
     /**
-     * Add a new matrix to the current matrix.
+     * Add a matrix to the current matrix.
      *
      * Given a matrix add it to the current matrix object and return as a new matrix.
      *
@@ -64,8 +65,8 @@ class Matrix(val size: Int) {
             throw IllegalArgumentException("Input matrix must be of equal size!")
         }
         val addedMatrix = Matrix(size)
-        for(row in 0 until matrix.size - 1) {
-            for(col in 0 until matrix.size - 1) {
+        for(row in 0 until matrix.size) {
+            for(col in 0 until matrix.size) {
                 val addedVal = this.matrixArray[row][col] + matrix.getValue(row, col)
                  addedMatrix.setValue(row, col, addedVal)
             }
@@ -87,8 +88,8 @@ class Matrix(val size: Int) {
             throw IllegalArgumentException("Input matrix must be of equal size!")
         }
         val subtractedMatrix = Matrix(size)
-        for(row in 0 until matrix.size - 1) {
-            for(col in 0 until matrix.size - 1) {
+        for(row in 0 until matrix.size) {
+            for(col in 0 until matrix.size) {
                 val subtractedVal = this.matrixArray[row][col] - matrix.getValue(row, col)
                 subtractedMatrix.setValue(row, col, subtractedVal)
             }
@@ -109,7 +110,7 @@ class Matrix(val size: Int) {
         // assume dimension n is power of 2
         // maybe I will come back later and add padding but for now I am assuming the above
 
-        require(log(size.toDouble(), 2.0).mod(2.0) == 0.0) {"The size of the matrix to be divided must be of a power to 2."}
+        require(log2(size.toDouble()) % 1.0 == 0.0) {"The size of the matrix to be divided must be of a power to 2."}
         // the four matrices we divide the original into
         // they go in clockwise order from top left
         val matrixSizes = size / 2
@@ -160,6 +161,7 @@ class Matrix(val size: Int) {
      * the times operator for the matrix class. Implementation is based on traditional matrix multiplication methods.
      *
      * @param other a [Matrix] object
+     * @throws IllegalArgumentException if the input matrices are not of equal size
      * @return a new [Matrix] object
      */
     operator fun times(other: Matrix): Matrix {

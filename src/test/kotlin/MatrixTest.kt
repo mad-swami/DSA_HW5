@@ -1,7 +1,6 @@
 import org.example.Matrix
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import kotlin.test.expect
 
 class MatrixTest {
     @Test
