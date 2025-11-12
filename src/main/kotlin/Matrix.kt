@@ -74,6 +74,29 @@ class Matrix(val size: Int) {
     }
 
     /**
+     * Subtract a matrix from the current matrix.
+     *
+     * Given a matrix subtract it from the current matrix object and return as a new matrix.
+     *
+     * @param matrix Matrix object to be subtracted
+     * @return a new matrix that is the difference of the two matrices
+     * @throws IllegalArgumentException if the input matrix is not of the same size they cannot be subtracted
+     */
+    operator fun minus(matrix: Matrix): Matrix {
+        if (matrix.size != this.size) {
+            throw IllegalArgumentException("Input matrix must be of equal size!")
+        }
+        val subtractedMatrix = Matrix(size)
+        for(row in 0 until matrix.size - 1) {
+            for(col in 0 until matrix.size - 1) {
+                val subtractedVal = this.matrixArray[row][col] - matrix.getValue(row, col)
+                subtractedMatrix.setValue(row, col, subtractedVal)
+            }
+        }
+        return subtractedMatrix
+    }
+
+    /**
      * Divide the matrix object into four new n/2 x n/2 matrices.
      *
      * Takes a matrix object, assuming its size is a power of 2, and splits it into four n/2 x n/2 matrices. The matrices
