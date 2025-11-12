@@ -182,4 +182,43 @@ class Matrix(val size: Int) {
         }
         return productMatrix
     }
+
+    fun strassenMultiply(other: Matrix): Matrix {
+        require(size == other.size) {"Size of the matrices multiplied must be equal."}
+
+        val (matrixA, matrixB, matrixC, matrixD) = this.divide()
+        val (matrixE, matrixF, matrixG, matrixH) = other.divide()
+
+        val p1 = (matrixF - matrixH) * matrixA
+        val p2 = (matrixA + matrixB) * matrixH
+        val p3 = (matrixC + matrixD) * matrixE
+        val p4 = (matrixG - matrixE) * matrixD
+        val p5 = (matrixA + matrixD) * (matrixE + matrixH)
+        val p6 = (matrixB - matrixD) * (matrixG + matrixH)
+        val p7 = (matrixA - matrixC) * (matrixE + matrixF)
+
+        val resultMatrix = Matrix(this.size)
+        val q1 = p5 + p4 - p2 + p6
+        val q2 = p1 + p2
+        val q3 = p3 + p4
+        val q4 = p1 + p5 - p3 - p7
+        val matrixList = listOf(q1, q2, q3, q4)
+
+        var i = 0
+        var j = 0
+        for (matrix in matrixList) {
+            for (k in 0..<this.size / 2) {
+                for (l in 0..<this.size / 2) {
+                    val productVal = matrix.getValue(k, l)
+                    resultMatrix.setValue(i, j, productVal)
+                    j++
+                }
+                if (j == this.size) {
+                    j = 0
+                    i++
+                }
+            }
+        }
+        return resultMatrix
+    }
 }
