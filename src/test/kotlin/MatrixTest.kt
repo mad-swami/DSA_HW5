@@ -1,6 +1,9 @@
 import org.example.Matrix
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import kotlin.random.Random
+import kotlin.time.DurationUnit
+import kotlin.time.measureTime
 
 class MatrixTest {
     @Test
