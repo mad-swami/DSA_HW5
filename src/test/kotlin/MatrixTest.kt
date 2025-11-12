@@ -69,4 +69,42 @@ class MatrixTest {
         }
     }
 
+    @Test
+    fun strassenMultiply() {
+        val size = 2
+
+        val matrixVals1 = arrayOf(2.0, 3.0, 4.0, 9.0)
+        val testMatrix1 = Matrix(size)
+        var index = 0
+        for (i in 0 until size ) {
+            for (j in 0 until size ) {
+                testMatrix1.setValue(i, j, matrixVals1[index])
+                index ++
+            }
+        }
+
+        val matrixVals2 = arrayOf(4.0, 8.0, 2.0, 5.0)
+        val testMatrix2 = Matrix(size)
+        index = 0
+        for (i in 0 until size ) {
+            for (j in 0 until size ) {
+                testMatrix2.setValue(i, j, matrixVals2[index])
+                index ++
+            }
+        }
+
+        val productMatrix = testMatrix1.strassenMultiply(testMatrix2)
+
+        val expectedVals = arrayOf(14.0, 31.0, 34.0, 77.0)
+        var checkVal = 0
+        // why I didn't write the first two for loops like this, idk
+        for (i in 0 until size ) {
+            for (j in 0 until size ) {
+                assertEquals(expectedVals[checkVal], productMatrix.getValue(i, j))
+                checkVal ++
+            }
+        }
+
+    }
+
 }
