@@ -197,40 +197,54 @@ class Matrix(val size: Int) {
      */
     fun strassenMultiply(other: Matrix): Matrix {
         require(size == other.size) {"Size of the matrices multiplied must be equal."}
+        require(size > 0 && (size and (size - 1)) == 0) { "Size must be power of 2" }
+
+        if (size <= 64) return this * other
 
         val (matrixA, matrixB, matrixC, matrixD) = this.divide()
         val (matrixE, matrixF, matrixG, matrixH) = other.divide()
 
-        val p1 = (matrixF - matrixH) * matrixA
-        val p2 = (matrixA + matrixB) * matrixH
-        val p3 = (matrixC + matrixD) * matrixE
-        val p4 = (matrixG - matrixE) * matrixD
-        val p5 = (matrixA + matrixD) * (matrixE + matrixH)
-        val p6 = (matrixB - matrixD) * (matrixG + matrixH)
-        val p7 = (matrixA - matrixC) * (matrixE + matrixF)
+        val p1 = matrixA.strassenMultiply(matrixF - matrixH)
+        val p2 = (matrixA + matrixB).strassenMultiply(matrixH)
+        val p3 = (matrixC + matrixD).strassenMultiply(matrixE)
+        val p4 = matrixD.strassenMultiply(matrixG - matrixE)
+        val p5 = (matrixA + matrixD).strassenMultiply(matrixE + matrixH)
+        val p6 = (matrixB - matrixD).strassenMultiply(matrixG + matrixH)
+        val p7 = (matrixA - matrixC).strassenMultiply(matrixE + matrixF)
 
-        val resultMatrix = Matrix(this.size)
         val q1 = p5 + p4 - p2 + p6
         val q2 = p1 + p2
         val q3 = p3 + p4
         val q4 = p1 + p5 - p3 - p7
-        val matrixList = listOf(q1, q2, q3, q4)
 
-        var i = 0
-        var j = 0
-        for (matrix in matrixList) {
-            for (k in 0..<this.size / 2) {
-                for (l in 0..<this.size / 2) {
-                    val productVal = matrix.getValue(k, l)
-                    resultMatrix.setValue(i, j, productVal)
-                    j++
-                }
-                if (j == this.size) {
-                    j = 0
-                    i++
-                }
-            }
-        }
-        return resultMatrix
+        return combine(q1, q2, q3, q4)
     }
+
+    private fun combine(q1: Matrix, q2: Matrix, q3: Matrix, q4: Matrix): Matrix {
+        val n2 = q1.size
+        val out = Matrix(n2 * 2)
+
+        // top left
+        for (i in 0 until n2)
+            for (j in 0 until n2)
+                out.setValue(i, j, q1.getValue(i, j))
+
+        // top right
+        for (i in 0 until n2)
+            for (j in 0 until n2)
+                out.setValue(i, j + n2, q2.getValue(i, j))
+
+        // bottom left
+        for (i in 0 until n2)
+            for (j in 0 until n2)
+                out.setValue(i + n2, j, q3.getValue(i, j))
+
+        // bottom right
+        for (i in 0 until n2)
+            for (j in 0 until n2)
+                out.setValue(i + n2, j + n2, q4.getValue(i, j))
+
+        return out
+    }
+
 }
